@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {% if obj is defined and obj %}
+        {% if obj.is_error is true %}
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{ obj.message }}
+            </div>
+        {% else %}
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{ obj.message }}
+            </div>
+        {% endif %}
+    {% endif %}
+    <form id="formStudent" method="post" enctype="multipart/form-data">
+        <fieldset id="fieldsetFormStudent">
+            <div id="divFieldsFormStudent">
+                <div class="form-group">
+                    <div class="d-flex">
+                        <div class="d-inline-block">
+                            <label for="inputDA" class="form-label mt-4">Numéro de DA</label>
+                            <input type="text" class="form-control" name="inputDA0" placeholder="Ex. 200010101"
+                                   required pattern="^[0-9]{9,12}$">
+                        </div>
+                        <div class="d-inline-block" style="margin-left: 1%">
+                            <label for="formFile" class="form-label mt-4">Fichier</label>
+                            <input class="form-control" type="file" name="formFile0" accept="image/png, image/jpeg"
+                                   required>
+                        </div>
+                        <div class="d-inline-block" style="margin-left: 1%">
+                            <label for="inputName" class="form-label mt-4">Nom</label>
+                            <input type="text" class="form-control" name="inputName0" placeholder="Ex. Renard"
+                                   required pattern="^[a-zA-ZÀ-ÿ\-\s]{1,40}$">
+                        </div>
+                        <div class="d-inline-block" style="margin-left: 1%">
+                            <label for="inputFName" class="form-label mt-4">Prénom</label>
+                            <input type="text" class="form-control" name="inputFName0" placeholder="Ex. Yolan"
+                                   required pattern="^[a-zA-ZÀ-ÿ\-\s]{1,40}$">
+                        </div>
+                        <div class="d-inline-block" style="margin-left: 1%">
+                            <div class="form-check form-switch" style="padding-top: 75%">
+                                <input class="form-check-input" type="checkbox" name="flexSwitchCheckAccess0">
+                                <label class="form-check-label" for="flexSwitchCheckAccess">Accès</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div>
+                <button type="button" class="btn btn-info float-start" onclick="addFields()">Ajouter un champ</button>
+                <button type="submit" class="btn btn-primary float-end">Importer</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
+{% include 'footer.html' %}
