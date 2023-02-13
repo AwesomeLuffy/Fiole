@@ -86,7 +86,7 @@ function addFields() {
     * Create the checkbox depends on the counter_da
      */
     // <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-    let checkbox = returnInput("checkbox", "flexSwitchCheckAccess" + counter_da, "", "form-check-input");
+    let checkbox = returnInput("checkbox", "flexSwitchCheckAccess" + counter_da, "", "", "form-check-input");
 
     /*
     * Create the labelCheckbox depends on the counter_da
