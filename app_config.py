@@ -12,6 +12,6 @@ VIEWS_DIR = APP_DIR + "Templates/"
 CONTROLLER_DIR = APP_DIR + "Controller/"
 
 # Title of the website
-WEBSITE_NAME = "Reconnaissance Raciale"
+WEBSITE_NAME = "Reconnaissance Faciale"
 
 
