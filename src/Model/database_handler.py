@@ -61,3 +61,21 @@ class DatabaseHandler:
             cursor.close()
             if connexion is None:
                 conn.close()
+
+    @staticmethod
+    def read_values(sql: str, where=None) -> list[tuple]:
+        conn = DatabaseHandler.get_conn()
+        cursor = conn.cursor()
+        try:
+            if where is not None:
+                cursor.execute(sql, where)
+            else:
+                cursor.execute(sql)
+
+            return cursor.fetchall()
+        except Exception as e:
+            print(e)
+            return []
+        finally:
+            cursor.close()
+            conn.close()
