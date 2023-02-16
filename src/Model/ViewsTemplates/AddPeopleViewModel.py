@@ -1,9 +1,13 @@
+from flask import Markup
+
+
 class AddPeopleViewModel:
 
-    def __init__(self, count: int = 0, is_error: bool = False):
-        self.is_error: bool = is_error
+    def __init__(self, count: int, list_error: list):
+        self.is_error: bool = list_error is not []
         self.count: int = count
         if self.is_error:
-            self.message = f"Error occured, {count:02d} added"
+            errors_message = '<br>'.join(list_error)
+            self.message = Markup(f"{count:02d} added<br>Error for : {errors_message}")
         else:
             self.message = f"Success ! {count:02d} added !"
