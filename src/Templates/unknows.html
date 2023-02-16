@@ -1,26 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
     {% if obj is defined and obj %}
-        <table class="table table-hover" style="margin-top: 1%">
-            <thead>
-                <tr class="table-primary">
-                    <th>DA</th>
-                    <th>Image</th>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for data in obj.data_list %}
-                <tr class="table-light">
-                    <td>{{ data["da"] }}</td>
-                    <td><img src="{{ data["image_location"] }}" alt="image" width="100" height="100"></td>
-                    <td>{{ data["nom"] }}</td>
-                    <td>{{ data["prenom"] }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+
     {% endif %}
 {% endblock %}
 {% include 'footer.html' %}
