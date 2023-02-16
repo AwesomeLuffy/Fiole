@@ -25,7 +25,9 @@ class AddPeopleController:
             # handled by the for loop but this allows to be sure to execute the last line field from the form
             # So, I convert the ImmutableMultiDict to a normal dict, add the space field and convert it back
             # to ImmutableMultiDict
-            data = ImmutableMultiDict(request.form.copy().add(" ", " "))
+            copy = request.form.copy()
+            copy.add(' ', ' ')
+            data = ImmutableMultiDict(copy).items()
 
             return_error_string = []
             actual_form = 0
