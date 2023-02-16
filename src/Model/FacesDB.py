@@ -18,7 +18,7 @@ class FacesDB:
 
     @staticmethod
     def get_all_faces_db():
-        sql = "SELECT da, image_location, nom, prenom FROM faces"
+        sql = "SELECT da, image_location, nom, prenom, acces FROM faces"
         return DatabaseHandler.read_values(sql, as_dict=True)
 
     @staticmethod
