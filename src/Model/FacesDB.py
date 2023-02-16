@@ -14,9 +14,15 @@ class FacesDB:
     @staticmethod
     def delete_face_db(da: int):
         sql = "DELETE FROM faces WHERE da = %s"
-        # return DatabaseHandler.insert_query(sql, da)
+        return DatabaseHandler.delete_values(sql, (da,))
 
     @staticmethod
     def get_all_faces_db():
         sql = "SELECT da, image_location, nom, prenom FROM faces"
         return DatabaseHandler.read_values(sql, as_dict=True)
+
+    @staticmethod
+    def update_face_db(face: DataFace):
+        sql = "UPDATE faces SET nom = %s, prenom = %s, acces = %s WHERE da = %s"
+        val = (face.name, face.surname, face.have_access, face.da)
+        return DatabaseHandler.update_values(sql, val)
