@@ -4,10 +4,10 @@ from src.Model.Utils import Utils
 
 class HomeController:
 
-    def home(self=None):
-        preformat_dict = Utils.get_preformat_render('index.html')
-        return render(**preformat_dict)
+    def __init__(self):
+        pass
 
-    def test(self=None):
-        preformat_dict = Utils.get_preformat_render('test.html')
+    @staticmethod
+    def home():
+        preformat_dict = Utils.get_preformat_render('index.html')
         return render(**preformat_dict)
