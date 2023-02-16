@@ -40,3 +40,24 @@ class Utils:
             return field.split(".")[-1] not in Utils.LIST_ACCEPT_FILES
         else:
             return False
+
+    @staticmethod
+    def check_for_error(key: str, value: str, array_df_constructor: dict, return_error_string: list,
+                        actual_line: int) -> bool:
+        if key.startswith("inputDA"):
+            if not Utils.verify_field(value, FieldsType.DA):
+                return_error_string.append(f"Line ({actual_line}) : DA is not valid ({value})")
+                return True
+            array_df_constructor["da"] = value
+        if key.startswith("inputName"):
+            if not Utils.verify_field(value, FieldsType.NAME):
+                return_error_string.append(f"Line ({actual_line}) : Name is not valid ({value})")
+                return True
+            array_df_constructor["name"] = value
+        if key.startswith("inputFName"):
+            if not Utils.verify_field(value, FieldsType.NAME):
+                return_error_string.append(f"Line ({actual_line}) : File Name is not valid ({value})")
+                return True
+            array_df_constructor["surname"] = value
+
+        return False

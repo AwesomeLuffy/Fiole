@@ -38,7 +38,7 @@ class AddPeopleController:
 
                 # Due to separated_from passed by reference we need to force the call of "check_for_error" so we can't
                 # use the "or" operator
-                if AddPeopleController.check_for_error(key, value, separated_form, return_error_string, actual_form):
+                if Utils.check_for_error(key, value, separated_form, return_error_string, actual_form):
                     actual_form += 1
                     separated_form = {}
 
@@ -81,23 +81,3 @@ class AddPeopleController:
             preformat = Utils.get_custom_preformat_render('add_people.html', obj=None, script='add_input_fields.js')
         return render_template(**preformat)
 
-    @staticmethod
-    def check_for_error(key: str, value: str, array_df_constructor: dict, return_error_string: list,
-                        actual_line: int) -> bool:
-        if key.startswith("inputDA"):
-            if not Utils.verify_field(value, FieldsType.DA):
-                return_error_string.append(f"Line ({actual_line}) : DA is not valid ({value})")
-                return True
-            array_df_constructor["da"] = value
-        if key.startswith("inputName"):
-            if not Utils.verify_field(value, FieldsType.NAME):
-                return_error_string.append(f"Line ({actual_line}) : Name is not valid ({value})")
-                return True
-            array_df_constructor["name"] = value
-        if key.startswith("inputFName"):
-            if not Utils.verify_field(value, FieldsType.NAME):
-                return_error_string.append(f"Line ({actual_line}) : Fuke Name is not valid ({value})")
-                return True
-            array_df_constructor["surname"] = value
-
-        return False
