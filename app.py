@@ -1,7 +1,6 @@
 from flask import Flask
-import config
+import app_config
 
-from src.Routes.Router import IndexRouter, AddPeopleRouter
 
 '''
     To add a controller:
@@ -12,17 +11,20 @@ from src.Routes.Router import IndexRouter, AddPeopleRouter
         5. Edit the app.py and add the router to the app (like app.register_blueprint(TestRouter, url_prefix="/"))
 '''
 
-app = Flask(__name__, template_folder=config.VIEWS_DIR, static_folder='src/static')
+app = Flask(__name__, template_folder=app_config.VIEWS_DIR, static_folder='src/static')
+
+app.config.from_object(app_config)
+
+# app.config["MYSQL_HOST"] = "localhost"
+# app.config["MYSQL_USER"] = "root"
+# app.config["MYSQL_PASSWORD"] = "test"
+# app.config["MYSQL_DB"] = "data_faces"
+app
+from src.Routes.Router import IndexRouter, AddPeopleRouter, SeePeopleRouter
 
 app.register_blueprint(IndexRouter, url_prefix="/")
 app.register_blueprint(AddPeopleRouter, url_prefix="/")
-
-app.config.from_object(config)
-
-app.config["MYSQL_HOST"] = ""
-app.config["MYSQL_USER"] = "user"
-app.config["MYSQL_PASSWORD"] = "password"
-app.config["MYSQL_DB"] = "database"
+app.register_blueprint(SeePeopleRouter, url_prefix="/")
 
 if __name__ == '__main__':
     app.run()
