@@ -1,7 +1,61 @@
 {% extends 'layout.html' %}
 {% block content %}
     {% if obj is defined and obj %}
-        
+        <table class="table table-hover" style="margin-top: 1%">
+            <thead>
+            <tr class="table-primary">
+                <th>DA</th>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Accès</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for data in obj.data_list %}
+                <form method="post">
+                    <tr class="table-light">
+                        <td>
+                            <label for="inputDA" class="form-label mt-4">Numéro de DA</label>
+                            <input type="text" class="form-control" name="inputDA" value="{{ data["da"] }}"
+                                   placeholder="Ex. 200010101"
+                                   required pattern="^[0-9]{9,12}$">
+                        </td>
+                        <td><img src="{{ data["image_location"] }}" alt="image" width="100" height="100"></td>
+                        <td>
+                            <label for="inputName" class="form-label mt-4">Nom</label>
+                            <input type="text" class="form-control" name="inputName" value="{{ data["nom"] }}"
+                                   placeholder="Ex. Renard"
+                                   required pattern="^[a-zA-ZÀ-ÿ\-\s]{1,40}$">
+                        </td>
+                        <td>
+                            <label for="inputFName" class="form-label mt-4">Prénom</label>
+                            <input type="text" class="form-control" name="inputFName" value="{{ data["prenom"] }}"
+                                   placeholder="Ex. Yolan"
+                                   required pattern="^[a-zA-ZÀ-ÿ\-\s]{1,40}$">
+                        </td>
+                        <td>
+                            <div class="form-check form-switch" style="padding-top: 75%">
+                                <input class="form-check-input" type="checkbox" name="flexSwitchCheckAccess">
+                                <label class="form-check-label" for="flexSwitchCheckAccess">Accès</label>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button type="submit" name="submit" value="Supprimer"
+                                        class="btn btn-outline-danger">&#10060;</button>
+                            </div>
+                            <div style="margin-top: 1%">
+                                <button type="submit" name="submit" value="Modifier"
+                                        class="btn btn-outline-primary">&#128190;</button>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
 {% endblock %}
 {% include 'footer.html' %}
