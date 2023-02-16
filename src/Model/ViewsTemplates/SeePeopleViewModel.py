@@ -8,7 +8,7 @@ class SeePeopleViewModel:
 
         self.postback = postback
         if self.postback:
-            self.is_error: bool = list_error is not []
+            self.is_error: bool = list_error is not [] and list_error is not None
             if self.is_error:
                 errors_message = '<br>'.join(list_error)
                 self.message = Markup(f"Error for : {errors_message}")
