@@ -1,5 +1,4 @@
 import mysql.connector as mc
-import app
 
 
 class DatabaseHandler:
@@ -63,9 +62,9 @@ class DatabaseHandler:
                 conn.close()
 
     @staticmethod
-    def read_values(sql: str, where=None) -> list[tuple]:
+    def read_values(sql: str, where=None, as_dict: bool = False) -> list[tuple]:
         conn = DatabaseHandler.get_conn()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=as_dict)
         try:
             if where is not None:
                 cursor.execute(sql, where)
