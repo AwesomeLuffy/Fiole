@@ -16,3 +16,4 @@ AddPeopleRouter.route('/add', methods=['GET', 'POST'])(AddPeopleController.add)
 # Create a router for the unknows page
 SeePeopleRouter = Blueprint('SeeRouter', __name__)
 SeePeopleRouter.route('/unknowns', methods=['GET', 'POST'])(SeePeopleController.unknows)
+SeePeopleRouter.route('/registered', methods=['GET', 'POST'])(SeePeopleController.registered)
