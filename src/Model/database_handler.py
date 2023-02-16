@@ -78,3 +78,35 @@ class DatabaseHandler:
         finally:
             cursor.close()
             conn.close()
+
+    @staticmethod
+    def update_values(sql: str, val: tuple) -> int:
+        conn = DatabaseHandler.get_conn()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(sql, val)
+            conn.commit()
+
+            return cursor.rowcount
+        except Exception as e:
+            print(e)
+            return -1
+        finally:
+            cursor.close()
+            conn.close()
+
+    @staticmethod
+    def delete_values(sql: str, where: tuple) -> int:
+        conn = DatabaseHandler.get_conn()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(sql, where)
+            conn.commit()
+
+            return cursor.rowcount
+        except Exception as e:
+            print(e)
+            return -1
+        finally:
+            cursor.close()
+            conn.close()
