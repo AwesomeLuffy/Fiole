@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{# Form to login #}
+{% block content %}
+    {# If the user is not connected #}
+    <form method="post">
+        <div style="margin-left: 25%; margin-right: 25%">
+            <div class="form-group">
+                <label for="inputUsername" class="form-label mt-4">Utilisateur</label>
+                {% if obj is defined and obj %}
+                    {% if obj.is_username_valid == True %}
+                        <input type="text" class="form-control is-valid" id="inputUsername" name="inputUsername"
+                               placeholder="Entrez Utilisateur" value="{{ obj.username_entered }}">
+                    {% else %}
+                        <input type="text" class="form-control is-invalid" id="inputUsername" name="inputUsername"
+                               placeholder="Entrez Utilisateur" value="{{ obj.username_entered }}">
+                        <div class="invalid-feedback">
+                            Utilisateur invalide
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <input type="text" class="form-control " id="inputUsername" name="inputUsername"
+                           placeholder="Entrez Utilisateur" >
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {% if obj is defined and obj %}
+                    {% if obj.is_username_valid == True %}
+                        {% if obj.is_password_valid == True %}
+                            <label for="inputPassword" class="form-label mt-4">Mot de passe</label>
+                            <input type="password" class="form-control is-valid" id="inputPassword" name="inputPassword"
+                                   placeholder="Entrez Utilisateur">
+                        {% else %}
+                            <label for="inputPassword" class="form-label mt-4">Mot de passe</label>
+                            <input type="password" class="form-control is-invalid" id="inputPassword"
+                                   name="inputPassword"
+                                   placeholder="Entrez Utilisateur">
+                            <div class="invalid-feedback">
+                                Mot de passe invalide
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <label for="inputPassword" class="form-label mt-4">Mot de passe</label>
+                        <input type="password" class="form-control" id="inputPassword" name="inputPassword"
+                               placeholder="Entrez Utilisateur">
+                    {% endif %}
+                {% else %}
+                    <label for="inputPassword" class="form-label mt-4">Mot de passe</label>
+                    <input type="password" class="form-control" id="inputPassword" name="inputPassword"
+                           placeholder="Entrez Utilisateur">
+                {% endif %}
+            </div>
+            <hr/>
+            <div>
+                <button type="submit" name="submit" value="login" class="btn btn-primary">Se connecter</button>
+                <div class="form-check form-switch float-end mt-3">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Resté connecté</label>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% include 'footer.html' %}
