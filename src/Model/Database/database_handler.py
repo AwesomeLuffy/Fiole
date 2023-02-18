@@ -45,7 +45,12 @@ class DatabaseHandler:
     # Connexion can be passed as parameter to not open another one
     # (will not be closed after, the method will act as subquery)
     @staticmethod
-    def check_value_exists(table_name: str, column_name: str, value: tuple, connexion=None):
+    def check_value_exists(table_name: str, column_name: str, value: tuple, connexion=None) -> bool:
+        """Method to check if value exists in a table
+        Connexion can be passed as parameter to not open another one
+        (will not be closed after, the method will act as subquery)
+        :return: True if value exists or if error happened, False otherwise
+        """
         conn = connexion if connexion is not None else DatabaseHandler.get_conn()
         cursor = conn.cursor()
         SQL_RAW_QUERY = f"SELECT {column_name} FROM {table_name} WHERE {column_name} = %s"
