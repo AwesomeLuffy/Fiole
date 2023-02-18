@@ -1,8 +1,8 @@
 from flask import request, redirect, url_for, render_template, session
-from src.Model.Utils import Utils
+from src.Model.Utils.Utils import Utils
 from src.Model.ViewsTemplates.LoginViewModel import LoginViewModel
-from src.Model.DBCommunicator import DBCommunicator
-from src.Model.JWToken import JWToken
+from src.Model.Utils.DBCommunicator import DBCommunicator
+from src.Model.Utils.JWToken import JWToken
 
 
 class LoginController:

@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for, session
-from src.Model.Utils import Utils
+from src.Model.Utils.Utils import Utils
 from src.Model.ViewsTemplates.SeePeopleViewModel import SeePeopleViewModel
 from src.Model.ViewsTemplates.SeeUnknownViewModel import SeeUnknownViewModel
-from src.Model.DBCommunicator import DBCommunicator
-from src.Model.DataFace import DataFace
+from src.Model.Utils.DBCommunicator import DBCommunicator
+from src.Model.Utils.DataFace import DataFace
 
 
 class SeePeopleController:

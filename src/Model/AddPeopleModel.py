@@ -1,5 +1,5 @@
-from src.Model.DataFace import DataFace
-from src.Model.DBCommunicator import DBCommunicator
+from src.Model.Utils.DataFace import DataFace
+from src.Model.Utils.DBCommunicator import DBCommunicator
 from src.Model.Database.database_handler import DatabaseHandler
 from enum import Enum
 import re

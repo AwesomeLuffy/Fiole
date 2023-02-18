@@ -1,5 +1,5 @@
 from flask import render_template, session, redirect, url_for
-from src.Model.Utils import Utils
+from src.Model.Utils.Utils import Utils
 from flask import request
 
 

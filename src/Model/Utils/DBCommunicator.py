@@ -2,7 +2,7 @@ import base64
 
 import bcrypt
 
-from src.Model.DataFace import DataFace
+from src.Model.Utils.DataFace import DataFace
 from src.Model.Database.database_handler import DatabaseHandler
 
 

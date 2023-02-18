@@ -1,5 +1,5 @@
 from flask import render_template as render
-from src.Model.Utils import Utils
+from src.Model.Utils.Utils import Utils
 
 
 class HomeController:

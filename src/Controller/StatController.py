@@ -1,4 +1,4 @@
-from src.Model.Utils import Utils
+from src.Model.Utils.Utils import Utils
 from flask import render_template as render
 from src.Model.ViewsTemplates.StatViewModel import StatViewModel
 from src.Model.StatModel import StatModel
