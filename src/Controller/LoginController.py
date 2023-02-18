@@ -27,7 +27,7 @@ class LoginController:
                     if DBCommunicator.check_user_encoded_password(request.form['inputUsername'],
                                                                   request.form['inputPassword']):
                         session['is_connected'] = True
-                        session['username'] = "admin"
+                        session['username'] = request.form['inputUsername']
 
                         response = redirect(url_for('IndexRouter.home'))
 
@@ -89,5 +89,4 @@ class LoginController:
             session.pop('username')
         if request.cookies.get("flask_token"):
             response.set_cookie("flask_token", "", expires=0)
-            return response
         return response
