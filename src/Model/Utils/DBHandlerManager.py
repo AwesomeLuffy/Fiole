@@ -6,7 +6,7 @@ from src.Model.Utils.DataFace import DataFace
 from src.Model.Database.database_handler import DatabaseHandler
 
 
-class DBCommunicator:
+class DBHandlerManager:
     """Class to communicate with the database
 
     This class is used to communicate with the database. It is used to insert, delete, update and get data from the database.
