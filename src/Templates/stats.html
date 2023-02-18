@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {# Obj is StatViewModel#}
+    {% if obj is defined and obj %}
+        <div style="margin-left: 10%; margin-right: 10%">
+            <div style="margin-top: 5%">
+                <h3>Pourcentage des accès (Oui / Non) : {{ obj.access_true_count_percentage }}%</h3>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar"
+                         style="width:  {{ obj.access_true_count_percentage }}%;"
+                         aria-valuenow="{{ obj.access_true_count_percentage }}"
+                         aria-valuemin="0" aria-valuemax="100">
+
+                    </div>
+                    <div class="progress-bar bg-danger" role="progressbar"
+                         style="width: {{ obj.access_false_count_percentage }}%;"
+                         aria-valuenow="{{ obj.access_false_count_percentage }}"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div>
+                <h3>Nombre d'inconnues : {{ obj.unknown_count }} / {{ obj.max_unknown }}</h3>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar"
+                         aria-valuenow="{{ obj.unknown_count }}" aria-valuemin="0"
+                         aria-valuemax="{{ obj.max_unknown }}"
+                         style="width: {{ obj.unknown_percentage }}%;">
+
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div>
+                <form method="post">
+                    <button type="submit" class="btn btn-outline-success float-end" name="refresh" value="refresh">
+                        Mettre à jour les données du Raspberry
+                    </button>
+                </form>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{% include 'footer.html' %}

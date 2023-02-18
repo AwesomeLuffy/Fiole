@@ -3,6 +3,7 @@ from src.Controller.HomeController import HomeController
 from src.Controller.AddPeopleController import AddPeopleController
 from src.Controller.SeePeopleController import SeePeopleController
 from src.Controller.LoginController import LoginController
+from src.Controller.StatController import StatController
 
 # The parameter in route will define the url like if /mywebsite is set, the url will be like localhost:XXXX/mywebsite
 
@@ -23,3 +24,7 @@ SeePeopleRouter.route('/registered', methods=['GET', 'POST'])(SeePeopleControlle
 LoginRouter = Blueprint('LoginRouter', __name__)
 LoginRouter.route('/login', methods=['GET', 'POST'])(LoginController.login)
 LoginRouter.route('/logout', methods=['GET'])(LoginController.logout)
+
+# Create router for the stat page
+StatRouter = Blueprint('StatRouter', __name__)
+StatRouter.route('/stats', methods=['GET'])(StatController.stats)
