@@ -32,6 +32,12 @@
                         </button>
                     </div>
                 </form>
+            {% else %}
+                <form class="d-flex">
+                    <button class="btn btn-outline-info" type="submit" id="button-connect"
+                            formaction="{{ url_for("LoginRouter.login") }}">Connexion
+                    </button>
+                </form>
             {% endif %}
         </div>
     </nav>
