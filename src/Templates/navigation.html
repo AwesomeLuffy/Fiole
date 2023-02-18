@@ -15,7 +15,7 @@
                            aria-haspopup="true" aria-expanded="false">Visages</a>
                         <div class="dropdown-menu" data-bs-popper="static">
                             <a class="dropdown-item" href="{{ url_for('SeeRouter.registered') }}">Enregistrés</a>
-                            <a class="dropdown-item" href="{{ url_for('SeeRouter.unknows') }}">Inconnues</a>
+                            <a class="dropdown-item" href="{{ url_for('SeeRouter.unknown') }}">Inconnues</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -23,6 +23,16 @@
                     </li>
                 </ul>
             </div>
+            {% if session['is_connected'] %}
+                <form class="d-flex">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" value="Bonjour {{ session['username'] }} !" readonly="">
+                        <button class="btn btn-outline-danger" type="submit" id="button-deconnect"
+                                formaction="{{ url_for("LoginRouter.logout") }}">Déconnexion
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
         </div>
     </nav>
 </header>
