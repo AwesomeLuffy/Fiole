@@ -1,9 +1,4 @@
-from typing import Match
-
 from app_config import WEBSITE_NAME
-from enum import Enum
-from src.Model.Database.database_handler import DatabaseHandler
-import re
 
 
 class Utils:
