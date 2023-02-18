@@ -14,4 +14,6 @@ CONTROLLER_DIR = APP_DIR + "Controller/"
 # Title of the website
 WEBSITE_NAME = "Reconnaissance Faciale"
 
+SECRET_KEY = "test_test_test_test"
+
 
