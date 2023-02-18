@@ -17,12 +17,13 @@ app.config.from_object(app_config)
 app.secret_key = app_config.SECRET_KEY
 
 # Import the routers later to avoid circular import
-from src.Routes.Router import IndexRouter, AddPeopleRouter, SeePeopleRouter, LoginRouter
+from src.Routes.Router import IndexRouter, AddPeopleRouter, SeePeopleRouter, LoginRouter, StatRouter
 
 app.register_blueprint(IndexRouter, url_prefix="/")
 app.register_blueprint(AddPeopleRouter, url_prefix="/")
-app.register_blueprint(SeePeopleRouter, url_prefix="/")
+app.register_blueprint(SeePeopleRouter, url_prefix="/faces")
 app.register_blueprint(LoginRouter, url_prefix="/")
+app.register_blueprint(StatRouter, url_prefix="/")
 
 
 @app.route('/static/img/<path:path>')
