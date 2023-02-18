@@ -62,7 +62,7 @@ class DatabaseHandler:
                 conn.close()
 
     @staticmethod
-    def read_values(sql: str, where=None, as_dict: bool = False) -> list[tuple]:
+    def read_values(sql: str, where=None, as_dict: bool = False, only_one: bool = False) -> list[tuple]:
         conn = DatabaseHandler.get_conn()
         cursor = conn.cursor(dictionary=as_dict)
         try:
@@ -71,7 +71,7 @@ class DatabaseHandler:
             else:
                 cursor.execute(sql)
 
-            return cursor.fetchall()
+            return cursor.fetchall() if not only_one else cursor.fetchone()
         except Exception as e:
             print(e)
             return []
@@ -110,3 +110,5 @@ class DatabaseHandler:
         finally:
             cursor.close()
             conn.close()
+
+
