@@ -1,5 +1,5 @@
 from src.Model.Utils.DataFace import DataFace
-from src.Model.Utils.DBCommunicator import DBCommunicator
+from src.Model.Utils.DBHandlerManager import DBHandlerManager
 from src.Model.Database.database_handler import DatabaseHandler
 from enum import Enum
 import re
@@ -78,7 +78,7 @@ class AddPeopleModel:
                 separated_form["have_access"] = True
 
         if len(data_faces) > 0:
-            DBCommunicator.insert_faces_db(data_faces)
+            DBHandlerManager.insert_faces_db(data_faces)
 
         return success_added_count, return_error_string
 
