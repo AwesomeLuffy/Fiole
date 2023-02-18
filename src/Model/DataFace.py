@@ -2,6 +2,9 @@ import face_recognition
 
 
 class DataFace:
+    """ DataFace class
+    This class is used to store the data of a face
+    """
     DA_PARAMETER_DF = "da"
     NAME_PARAMETER_DF = "name"
     SURNAME_PARAMETER_DF = "surname"

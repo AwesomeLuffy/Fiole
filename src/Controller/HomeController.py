@@ -9,5 +9,8 @@ class HomeController:
 
     @staticmethod
     def home():
+        """Method to render the home page
+        :return: render_template
+        """
         preformat_dict = Utils.get_preformat_render('index.html')
         return render(**preformat_dict)
