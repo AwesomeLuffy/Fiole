@@ -1,16 +1,21 @@
 import base64
 import hashlib
+import hmac
 import json
 from datetime import datetime, timedelta
 import re
 
 
 class JWToken:
+    """Class to manage the JWT token
+    Translated from my code in PHP
+    See : https://github.com/AwesomeLuffy/SimpleToken/blob/master/src/JWToken.php
+    """
 
     def __init__(self, head, payl, sig):
-        self.header = head
-        self.payload = payl
-        self.signature = sig
+        self.header: str = head
+        self.payload: str = payl
+        self.signature: str = sig
 
     @staticmethod
     def generate_jw_token(header, payload, secret, validity=7):
@@ -19,17 +24,25 @@ class JWToken:
         now = datetime.now()
         payload["iat"] = now.timestamp()
         payload["exp"] = (now + timedelta(days=validity)).timestamp()
-        header_encoded = JWToken.b64_encode(json.dumps(header).encode('utf-8'))
-        payload_encoded = JWToken.b64_encode(json.dumps(payload).encode('utf-8'))
+        header_encoded = JWToken.b64_encode(json.dumps(header))
+        payload_encoded = JWToken.b64_encode(json.dumps(payload))
         signature = JWToken.generate(header_encoded, payload_encoded, secret)
         signature = JWToken.b64_encode(signature)
         return JWToken(header_encoded, payload_encoded, signature)
 
     @staticmethod
     def generate(header_encoded, payload_encoded, secret):
-        secret_encoded = JWToken.b64_encode(secret.encode('utf-8'))
-        message = f"{header_encoded}.{payload_encoded}".encode('utf-8')
-        return hashlib.sha256(secret_encoded + message).digest()
+        """Generate the signature of the token
+        :param header_encoded: the header encoded in base64
+        :param payload_encoded: the payload encoded in base64
+        :param secret: the secret key
+        :return: the signature
+        """
+        secret_encoded = JWToken.b64_encode(secret).encode('utf-8')
+        # Create hmac with sha256 and secret
+        dig = hmac.new(secret_encoded, msg=f"{header_encoded}.{payload_encoded}".encode('utf-8'),
+                       digestmod=hashlib.sha256).digest()
+        return base64.urlsafe_b64encode(dig).decode()
 
     def check_token_signature(self, secret):
         return JWToken.b64_encode(JWToken.generate(self.header, self.payload, secret)) == self.signature
@@ -54,11 +67,11 @@ class JWToken:
         return None
 
     @staticmethod
-    def b64_encode(data):
+    def b64_encode(data: str) -> str:
         # 1 - Encode in base64 the data (payload or header)
         # 2 - Replace + to - & / to _ with strtr (Not in JWT chart)
         # 3 - Remove the "=" with trim (Not in JWT chart)
-        return base64.urlsafe_b64encode(data).rstrip(b"=").decode('utf-8')
+        return base64.urlsafe_b64encode(data.encode('utf-8')).rstrip(b"=").decode('utf-8')
 
     def read_header(self):
         return json.loads(base64.urlsafe_b64decode(self.header + '==').decode('utf-8'))
