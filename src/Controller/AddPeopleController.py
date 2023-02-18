@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, session, redirect, url_for
 from src.Model.Utils import Utils, FieldsType
 from flask import request
 from src.Model.DataFace import DataFace
@@ -6,7 +6,7 @@ from src.Model.DataFace import DataFace
 from werkzeug.datastructures import ImmutableMultiDict
 
 from src.Model.ViewsTemplates.AddPeopleViewModel import AddPeopleViewModel
-from src.Model.FacesDB import FacesDB
+from src.Model.DBCommunicator import DBCommunicator
 
 
 class AddPeopleController:
@@ -16,6 +16,13 @@ class AddPeopleController:
 
     @staticmethod
     def add():
+        """Method to add people
+        This method is a bit tricky, I use this 'cause it would have to me take a lot of time to do it in the good way like trim values in first time and so on
+        Not the best way to do it but it works
+        :return: render_template
+        """
+        if not session.get("is_connected"):
+            return redirect(url_for("LoginRouter.login"))
         if request.method == 'POST':
             # Get the data from the form and split it into array by the number at the end of the field
             # For example: inputData0, inputName0, inputFile0 will be split into 1 array
@@ -37,6 +44,7 @@ class AddPeopleController:
             separated_form = {}
 
             for key, value in data:
+                # TODO check if DA exist in DB
 
                 # If the number at the end changed or if a field not valid we check the another
                 # line of fields
@@ -73,7 +81,7 @@ class AddPeopleController:
                     separated_form["have_access"] = True
 
             if len(data_faces) > 0:
-                FacesDB.insert_faces_db(data_faces)
+                DBCommunicator.insert_faces_db(data_faces)
 
             preformat = Utils.get_custom_preformat_render('add_people.html',
                                                           obj=AddPeopleViewModel(success_added_count,
