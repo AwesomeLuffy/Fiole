@@ -1,6 +1,5 @@
-from flask import Flask
+from flask import Flask, session, send_from_directory, redirect, url_for
 import app_config
-
 
 '''
     To add a controller:
@@ -15,16 +14,29 @@ app = Flask(__name__, template_folder=app_config.VIEWS_DIR, static_folder='src/s
 
 app.config.from_object(app_config)
 
-# app.config["MYSQL_HOST"] = "localhost"
-# app.config["MYSQL_USER"] = "root"
-# app.config["MYSQL_PASSWORD"] = "test"
-# app.config["MYSQL_DB"] = "data_faces"
-app
-from src.Routes.Router import IndexRouter, AddPeopleRouter, SeePeopleRouter
+app.secret_key = app_config.SECRET_KEY
+
+# Import the routers later to avoid circular import
+from src.Routes.Router import IndexRouter, AddPeopleRouter, SeePeopleRouter, LoginRouter
 
 app.register_blueprint(IndexRouter, url_prefix="/")
 app.register_blueprint(AddPeopleRouter, url_prefix="/")
 app.register_blueprint(SeePeopleRouter, url_prefix="/")
+app.register_blueprint(LoginRouter, url_prefix="/")
+
+
+@app.route('/static/img/<path:path>')
+def send_img(path):
+    """
+    Secure the img/X path, only connected user can access this directory
+    :param path:
+    :return:
+    """
+    if session.get("is_connected"):
+        return send_from_directory('src/static/img', path)
+    else:
+        return redirect(url_for("LoginRouter.login"))
+
 
 if __name__ == '__main__':
     app.run()
