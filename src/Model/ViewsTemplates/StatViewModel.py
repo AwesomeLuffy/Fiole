@@ -5,7 +5,8 @@ class StatViewModel:
 
     def __init__(self, access_count: tuple[int, int] = (50, 50), unknown_count: int = 1):
         access_true_count, access_false_count = access_count
-        self.access_true_count_percentage = access_true_count / (access_true_count + access_false_count) * 100
+        self.access_true_count_percentage = 0 if access_true_count == 0 else access_true_count / (
+                access_true_count + access_false_count) * 100
         self.access_false_count_percentage = 100 - self.access_true_count_percentage
 
         self.unknown_count = unknown_count
