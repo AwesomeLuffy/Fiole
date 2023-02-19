@@ -30,6 +30,11 @@ class LoginModel:
 
     @staticmethod
     def check_login_token(token: str) -> tuple[bool, str]:
+        """Method to check if the token is valid
+        It will return the username in the token if it valid (Only work for login token)
+        :param token: token
+        :return: tuple[bool, str] (is_token_valid, username)
+        """
         token = JWToken.token_from_string(token)
         if token.check_token_signature(LoginModel.SECRET_KEY):
             if not token.is_expired():
@@ -38,6 +43,11 @@ class LoginModel:
 
     @staticmethod
     def get_login_token(username: str, validity: int) -> str:
+        """Method to get a token
+        :param username: username
+        :param validity: validity of the token
+        :return: str
+        """
         token = JWToken.generate_jw_token(header=LoginModel.TOKEN_HEADER,
                                           payload={"username": username},
                                           secret=LoginModel.SECRET_KEY,
