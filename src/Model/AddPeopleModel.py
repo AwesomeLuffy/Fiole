@@ -19,6 +19,13 @@ class AddPeopleModel:
 
     LIST_ACCEPT_FILES = [".jpg", ".jpeg", ".png"]
 
+    FORM_DA = "inputDA"
+    FORM_NAME = "inputName"
+    FORM_FNAME = "inputFName"
+    FORM_FILE = "formFile"
+    FORM_ACCESS = "flexSwitchCheckAccess"
+
+
     def __init__(self):
         pass
 
@@ -46,6 +53,8 @@ class AddPeopleModel:
             # If the number at the end changed or if a field not valid we check the another
             # line of fields
             if not key.endswith(str(actual_form)):
+                if key == "":
+                    break
                 if AddPeopleModel.verify_field(files[f"formFile{actual_form}"].filename,
                                                FieldsType.FILE) and return_error_string == []:
                     file = files[f"formFile{actual_form}"]
@@ -112,7 +121,7 @@ class AddPeopleModel:
             :param actual_line: The actual line of the form
             :return: True if the field is not valid, False if the field is valid
             """
-        if key.startswith("inputDA"):
+        if key.startswith(AddPeopleModel.FORM_DA):
             if not AddPeopleModel.verify_field(value, FieldsType.DA):
                 return_error_string.append(f"Line ({actual_line}) : DA is not valid ({value})")
                 return True
@@ -120,12 +129,12 @@ class AddPeopleModel:
                 return_error_string.append(f"Line ({actual_line}) : DA already exists ({value})")
                 return True
             array_df_constructor["da"] = value
-        if key.startswith("inputName"):
+        if key.startswith(AddPeopleModel.FORM_NAME):
             if not AddPeopleModel.verify_field(value, FieldsType.NAME):
                 return_error_string.append(f"Line ({actual_line}) : Name is not valid ({value})")
                 return True
             array_df_constructor["name"] = value
-        if key.startswith("inputFName"):
+        if key.startswith(AddPeopleModel.FORM_FNAME):
             if not AddPeopleModel.verify_field(value, FieldsType.NAME):
                 return_error_string.append(f"Line ({actual_line}) : File Name is not valid ({value})")
                 return True

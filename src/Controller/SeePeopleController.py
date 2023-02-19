@@ -4,6 +4,8 @@ from src.Model.ViewsTemplates.SeePeopleViewModel import SeePeopleViewModel
 from src.Model.ViewsTemplates.SeeUnknownViewModel import SeeUnknownViewModel
 from src.Model.Utils.DBHandlerManager import DBHandlerManager
 from src.Model.Utils.DataFace import DataFace
+from src.Model.SeePeopleModel import SeePeopleModel
+from src.Controller.LoginController import LoginController
 
 
 class SeePeopleController:
@@ -18,6 +20,10 @@ class SeePeopleController:
 
     UNKNOWN_NAME_KEY = "hiddenName"
 
+    SUBMIT_ACTION_DELETE = "delete"
+    SUBMIT_ACTION_DELETE_ALL = "delete_all"
+    SUBMIT_ACTION_MODIFY = "modify"
+
     def __init__(self):
         pass
 
@@ -26,24 +32,26 @@ class SeePeopleController:
         """Method to see unknown people in the database
         :return: render_template
         """
-        if not session.get("is_connected"):
+        if not session.get(LoginController.SESSION_IS_CONNECTED):
             return redirect(url_for("LoginRouter.login"))
+
+        # Create the instance of the ViewModel
+        suvm_instance = SeeUnknownViewModel(unknown_list=SeePeopleModel.get_unknowns())
+
         if request.method == "POST":
             count_affected = 0
-            if request.form[SeePeopleController.SUBMIT_KEY] == "delete":
-                count_affected = DBHandlerManager.delete_specific_unknown(
+            if request.form[SeePeopleController.SUBMIT_KEY] == SeePeopleController.SUBMIT_ACTION_DELETE:
+                count_affected = SeePeopleModel.delete_specific_unknown(
                     request.form[SeePeopleController.UNKNOWN_NAME_KEY])
-            elif request.form[SeePeopleController.SUBMIT_KEY] == "delete_all":
-                count_affected = DBHandlerManager.delete_unknown()
 
-            preformat = Utils.get_preformat_render("unknown.html",
-                                                   obj=SeeUnknownViewModel(unknown_list=DBHandlerManager.get_unknown(),
-                                                                           postback=True,
-                                                                           count_affected=count_affected
-                                                                           ))
-        else:
-            dataface_list = DBHandlerManager.get_unknown()
-            preformat = Utils.get_preformat_render("unknown.html", obj=SeeUnknownViewModel(dataface_list))
+            elif request.form[SeePeopleController.SUBMIT_KEY] == SeePeopleController.SUBMIT_ACTION_DELETE_ALL:
+                count_affected = SeePeopleModel.delete_unknown()
+
+            suvm_instance.postback = True
+            suvm_instance.count_affected = count_affected
+
+        preformat = Utils.get_preformat_render("unknown.html",
+                                               obj=suvm_instance)
         return render_template(**preformat)
 
     @staticmethod
@@ -53,9 +61,15 @@ class SeePeopleController:
         """
         if not session.get("is_connected"):
             return redirect(url_for("LoginRouter.login"))
+
+
+
+        # Create the instance of the ViewModel
+        spvm_instance = SeePeopleViewModel(dataface_list=DBHandlerManager.get_all_faces_db())
+
         if request.method == "POST":
-            if request.form[SeePeopleController.SUBMIT_KEY] == "Modifier":
-                return_error_string = []
+            if request.form[SeePeopleController.SUBMIT_KEY] == SeePeopleController.SUBMIT_ACTION_MODIFY:
+                # Separate the form into a dict
                 separated_form = {DataFace.DA_PARAMETER_DF: request.form[SeePeopleController.DA_KEY],
 
                                   DataFace.NAME_PARAMETER_DF: request.form[SeePeopleController.NAME_KEY],
@@ -69,34 +83,20 @@ class SeePeopleController:
 
                                   }
 
-                for key, value in separated_form.items():
-                    if Utils.check_for_error(key, value, separated_form, return_error_string, 0):
-                        break
+                # Modify the person in the database and get the error list ([] if no error)
+                return_error_string = SeePeopleModel.modify_people(separated_form)
 
-                if not return_error_string:
-                    data_face = DataFace(**separated_form)
+                # Assign to the instance the error list and the postback
+                spvm_instance.data_list = DBHandlerManager.get_all_faces_db()
+                spvm_instance.error_list = return_error_string
+                spvm_instance.postback = True
 
-                    DBHandlerManager.update_face_db(data_face)
-
-                preformat = Utils.get_preformat_render("registered.html",
-                                                       obj=SeePeopleViewModel(
-                                                           dataface_list=DBHandlerManager.get_all_faces_db(),
-                                                           list_error=return_error_string,
-                                                           postback=True
-                                                           ))
-            elif request.form[SeePeopleController.SUBMIT_KEY] == "Supprimer":
+            elif request.form[SeePeopleController.SUBMIT_KEY] == SeePeopleController.SUBMIT_ACTION_DELETE:
                 DBHandlerManager.delete_face_db(int(request.form[SeePeopleController.DA_KEY]))
-                preformat = Utils.get_preformat_render("registered.html",
-                                                       obj=SeePeopleViewModel(
-                                                           dataface_list=DBHandlerManager.get_all_faces_db(),
-                                                           postback=True
-                                                           ))
-            else:
-                preformat = Utils.get_preformat_render("registered.html",
-                                                       obj=SeePeopleViewModel(
-                                                           dataface_list=DBHandlerManager.get_all_faces_db()))
-        else:
-            preformat = Utils.get_preformat_render("registered.html",
-                                                   obj=SeePeopleViewModel(
-                                                       dataface_list=DBHandlerManager.get_all_faces_db()))
+                # Assign to the instance the postback to display the card with the message
+                spvm_instance.data_list = DBHandlerManager.get_all_faces_db()
+                spvm_instance.postback = True
+
+        preformat = Utils.get_preformat_render("registered.html",
+                                               obj=spvm_instance)
         return render_template(**preformat)

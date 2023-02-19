@@ -8,6 +8,18 @@ class LoginController:
     # In days
     TOKEN_VALIDITY = 3
 
+    # Session name
+    SESSION_USERNAME = "username"
+    SESSION_IS_CONNECTED = "is_connected"
+
+    # Cookies name
+    TOKEN_COOKIE = "flask_token"
+
+    # Inputs
+    INPUT_USERNAME = "inputUsername"
+    INPUT_PASSWORD = "inputPassword"
+    INPUT_REMEMBER_ME = "flexSwitchCheckRememberMe"
+
     def __init__(self):
         pass
 
@@ -29,34 +41,34 @@ class LoginController:
                 return redirect(url_for('IndexRouter.home'))
 
         # ----------------------------
-
+        # Create the instance of the ViewModel (Set as None by default in case of no ViewModel have to be passed)
+        lvm_instance = None
         if request.method == "POST":
             if request.form['submit'] == "login":
-                username = request.form['inputUsername']
+                username = request.form[LoginController.INPUT_USERNAME]
                 is_username_valid, is_password_valid = LoginModel.check_login(username,
-                                                                              request.form['inputPassword'])
+                                                                              request.form[
+                                                                                  LoginController.INPUT_PASSWORD])
 
                 if is_username_valid and is_password_valid:
-                    session['is_connected'] = True
-                    session['username'] = username
+                    session[LoginController.SESSION_IS_CONNECTED] = True
+                    session[LoginController.SESSION_USERNAME] = username
 
                     response = redirect(url_for('IndexRouter.home'))
 
-                    if request.form.get('flexSwitchCheckRememberMe'):
+                    if request.form.get(LoginController.TOKEN_COOKIE):
                         token = LoginModel.get_login_token(username, 3600)
-                        response.set_cookie("flask_token", token)
+                        response.set_cookie(LoginController.TOKEN_COOKIE, token)
 
                     return response
 
-                preformat = Utils.get_preformat_render("login.html")
-                # Add object to preformat
-                preformat["obj"] = LoginViewModel(is_username_valid=is_username_valid,
-                                                  is_password_valid=is_password_valid,
-                                                  username_entered=username)
-                return render_template(**preformat)
-        else:
-            preformat = Utils.get_preformat_render("login.html")
-            return render_template(**preformat)
+                # Make the ViewModel
+                lvm_instance = LoginViewModel(is_username_valid=is_username_valid,
+                                              is_password_valid=is_password_valid,
+                                              username_entered=username)
+
+        preformat = Utils.get_preformat_render("login.html", obj=lvm_instance)
+        return render_template(**preformat)
 
     @staticmethod
     def logout():
@@ -67,9 +79,10 @@ class LoginController:
         :return: redirect
         """
         response = redirect(url_for('LoginRouter.login'))
-        if session.get("is_connected"):
-            session.pop('is_connected')
-            session.pop('username')
-        if request.cookies.get("flask_token"):
-            response.set_cookie("flask_token", "", expires=0)
+        if session.get(LoginController.SESSION_IS_CONNECTED):
+            session.pop(LoginController.SESSION_IS_CONNECTED)
+            session.pop(LoginController.SESSION_USERNAME)
+
+        if request.cookies.get(LoginController.TOKEN_COOKIE):
+            response.set_cookie(LoginController.TOKEN_COOKIE, "", expires=0)
         return response
