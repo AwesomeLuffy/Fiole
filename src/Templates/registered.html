@@ -24,7 +24,7 @@
                         </td>
                         <td>
                             {% set name = data["image_location"].split('/') %}
-                            <img src="static/img/{{ name|last }}" alt="image"  style="max-width: 100px; max-height: 100px">
+                            <img src="/static/img/{{ name|last }}" alt="image"  style="max-width: 100px; max-height: 100px">
                         </td>
                         <td>
                             <label for="inputName" class="form-label mt-4">Nom</label>
@@ -50,11 +50,11 @@
                         </td>
                         <td>
                             <div>
-                                <button type="submit" name="submit" value="Supprimer"
+                                <button type="submit" name="submit" value="delete"
                                         class="btn btn-outline-danger">&#10060;</button>
                             </div>
                             <div style="margin-top: 1%">
-                                <button type="submit" name="submit" value="Modifier"
+                                <button type="submit" name="submit" value="modify"
                                         class="btn btn-outline-primary">&#128190;</button>
                             </div>
                         </td>
