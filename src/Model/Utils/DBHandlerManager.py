@@ -42,38 +42,7 @@ class DBHandlerManager:
         sql = "SELECT da, image_location, nom, prenom, acces FROM faces"
         return DatabaseHandler.read_values(sql, as_dict=True)
 
-    @staticmethod
-    def get_unknown():
-        """Get all unknown faces from the database
-        :return:
-        """
-        sql = "SELECT name, image, date_inserted FROM unknows"
-        values = DatabaseHandler.read_values(sql, as_dict=True)
-        # Get BLOB image and convert to base64
 
-        for value in values:
-            value["image"] = base64.b64encode(value["image"]).decode("utf-8")
-        return values
-
-    @staticmethod
-    def delete_unknown() -> int:
-        """Delete all unknown faces from the database
-
-        :return: number of rows deleted
-        """
-        sql = "DELETE FROM unknows"
-        return DatabaseHandler.delete_values(sql, None)
-
-    @staticmethod
-    def delete_specific_unknown(name: str) -> int:
-        """Delete a specific unknown face from the database
-
-        name: name of the unknown face
-
-        :return: number of rows deleted
-        """
-        sql = "DELETE FROM unknows WHERE name = %s"
-        return DatabaseHandler.delete_values(sql, (name,))
 
     @staticmethod
     def update_face_db(face: DataFace):
