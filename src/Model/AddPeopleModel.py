@@ -4,6 +4,7 @@ from src.Model.Database.database_handler import DatabaseHandler
 from enum import Enum
 import re
 from werkzeug.datastructures import ImmutableMultiDict
+import os
 
 
 class FieldsType(Enum):
@@ -74,7 +75,7 @@ class AddPeopleModel:
                         data_faces.append(data_face)
                         success_added_count += 1
                     else:
-                        print(error)
+                        os.remove(path)
                         return_error_string.append(f"Line ({actual_form}) for DA {separated_form['da']} : {error}")
                 actual_form += 1
                 separated_form = {}
