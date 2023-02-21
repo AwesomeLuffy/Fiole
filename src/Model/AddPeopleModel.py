@@ -54,31 +54,32 @@ class AddPeopleModel:
             # If the number at the end changed or if a field not valid we check the another
             # line of fields
             if not key.endswith(str(actual_form)):
-                if key == "":
-                    break
-                if AddPeopleModel.verify_field(files[f"formFile{actual_form}"].filename,
-                                               FieldsType.FILE) and return_error_string == []:
-                    file = files[f"formFile{actual_form}"]
-                    file.filename = f"{separated_form['da']}.{file.filename.split('.')[-1]}"
+                if files.get(f"formFile{actual_form}") is not None:
+                    if AddPeopleModel.verify_field(files[f"formFile{actual_form}"].filename,
+                                                   FieldsType.FILE) and return_error_string == []:
+                        file = files[f"formFile{actual_form}"]
+                        file.filename = f"{separated_form['da']}.{file.filename.split('.')[-1]}"
 
-                    path = f"src/static/img/{file.filename}"
-                    file.save(path)
-                    separated_form["img_path"] = path
+                        path = f"src/static/img/{file.filename}"
+                        file.save(path)
+                        separated_form["img_path"] = path
 
-                    if "have_access" not in separated_form:
-                        separated_form["have_access"] = False
+                        if "have_access" not in separated_form:
+                            separated_form["have_access"] = False
 
-                    data_face = DataFace(**separated_form)
-                    is_success, error = data_face.build_face_encoded()
+                        data_face = DataFace(**separated_form)
+                        is_success, error = data_face.build_face_encoded()
 
-                    if is_success:
-                        data_faces.append(data_face)
-                        success_added_count += 1
-                    else:
-                        os.remove(path)
-                        return_error_string.append(f"Line ({actual_form}) for DA {separated_form['da']} : {error}")
-                actual_form += 1
-                separated_form = {}
+                        if is_success:
+                            data_faces.append(data_face)
+                            success_added_count += 1
+                        else:
+                            os.remove(path)
+                            return_error_string.append(f"Line ({actual_form}) for DA {separated_form['da']} : {error}")
+                    actual_form += 1
+                    separated_form = {}
+                else:
+                    actual_form += 1
 
             # Due to separated_from passed by reference we need to force the call of "check_for_error" so we can't
             # use the "or" operator
