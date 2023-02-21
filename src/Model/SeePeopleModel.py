@@ -17,7 +17,7 @@ class SeePeopleModel:
         """Modify a person in the database
         It will check if the form is valid and then modify the person in the database
         :param separated_form: dict
-        :return: tuple[int, List[str]] - int is the number of rows modified, List[str] is the list of errors (-1 if error)
+        :return: list of error, return empty list if no error
         """
         return_error_string = []
 
