@@ -32,9 +32,10 @@ class AddPeopleModel:
     @staticmethod
     def add_people(data: ImmutableMultiDict, files: dict) -> tuple[int, list[str]]:
         """Method to add people to the database
-            Get the data from the form and split it into array by the number at the end of the field
-            For example: inputData0, inputName0, inputFile0 will be split into 1 array
-            And inputData1, inputName1, inputFile1 will be split into another array
+        Get the data from the form and create face for each line fields
+        Example of data: ImmutableMultiDict([('inputDA0', '123456789'), ('inputName0', 'John'), ('inputFName0',
+        'Doe') and a Picture Equivalent to the first field of form, we will create a DataFace object with the values
+        and pass to the next line that end with 1 (like inputDA1)
 
             :param data: The data from the form
             :param files: The files from the form
