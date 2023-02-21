@@ -16,9 +16,12 @@
     <form id="formStudent" method="post" enctype="multipart/form-data">
         <fieldset id="fieldsetFormStudent">
             <div id="divFieldsFormStudent">
-                <div class="form-group">
+                <div class="form-group" id="formGroup0">
                     <div class="d-flex">
                         <div class="d-inline-block">
+                            <button type="button" style="margin-top: 75%" class="btn btn-outline-danger" onclick="deleteLine(this.parentNode.parentNode.parentNode.id)">&#10060;</button>
+                        </div>
+                        <div class="d-inline-block" style="margin-left: 1%">
                             <label for="inputDA" class="form-label mt-4">Numéro de DA</label>
                             <input type="text" class="form-control" name="inputDA0" placeholder="Ex. 200010101"
                                    required pattern="^[0-9]{9,12}$">

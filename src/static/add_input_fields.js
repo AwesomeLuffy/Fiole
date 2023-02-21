@@ -6,6 +6,7 @@ const PATTERN_REGEX_NAME = "^[a-zA-ZÀ-ÿ\\-\\s]{1,40}$";
 
 const LIST_ACCEPT_FILES = ".jpg,.jpeg,.png";
 
+
 /**
  * This function has to be called when the user click on the button "Ajouter un champ"
  * It can be only used for the form in "add_people.html"
@@ -15,13 +16,15 @@ function addFields() {
     * Create the necessaries div to add the new fields
     * */
     // <div class="form-group">
-    let divFormGroup = returnDiv("form-group");
+    let divFormGroup = returnDiv("form-group", "", "formGroup" + counter_da);
 
     // <div class="d-flex">
     let divFlex = returnDiv("d-flex");
 
     // <div class="d-inline-block">
-    let divInline1 = returnDiv("d-inline-block");
+    let divInline0 = returnDiv("d-inline-block");
+
+    let divInline1 = returnDiv("d-inline-block", "margin-left: 1%");
 
     let divInline2 = returnDiv("d-inline-block", "margin-left: 1%");
 
@@ -32,6 +35,15 @@ function addFields() {
     let divInline5 = returnDiv("d-inline-block", "margin-left: 1%");
 
     let divSwitch = returnDiv("form-check form-switch", "padding-top: 75%");
+
+    /*
+    * Create the buttonDelete depends on the counter_da
+    *
+     */
+    let buttonDelete = returnButton("&#10060;",
+        "margin-top: 75%;",
+        "btn btn-outline-danger",
+        "deleteLine(this.parentNode.parentNode.parentNode.id)");
 
     /*
     * Create the labelDA depends on the counter_da
@@ -110,6 +122,8 @@ function addFields() {
                     </div>
                 </div>
     * */
+    //Div for the buttonDelete
+    divInline0.appendChild(buttonDelete);
 
     // Div for the DA
     divInline1.appendChild(labelDA);
@@ -135,6 +149,7 @@ function addFields() {
     divInline5.appendChild(divSwitch);
 
     //Div for the d-flex
+    divFlex.appendChild(divInline0);
     divFlex.appendChild(divInline1);
     divFlex.appendChild(divInline2);
     divFlex.appendChild(divInline3);
@@ -179,6 +194,16 @@ function returnInput(type, name, required = true, placeholder = "", clazz = "", 
     return input;
 }
 
+function returnButton(value, style, clazz, action) {
+    let button = document.createElement("button");
+    button.setAttribute("type", "button");
+    button.setAttribute("onclick", action);
+    button.setAttribute("class", clazz);
+    button.setAttribute("style", style);
+    button.innerHTML = value;
+    return button;
+}
+
 // Create a label with a for and a text
 function returnLabel(forName, text, clazz = "") {
     let label = document.createElement("label");
@@ -195,13 +220,24 @@ function returnLabel(forName, text, clazz = "") {
 }
 
 // Create a div with a class and a style
-function returnDiv(classDiv, style) {
+function returnDiv(classDiv, style = "", id = "") {
     let div = document.createElement("div");
     div.setAttribute("class", classDiv);
-
-    if (style !== undefined) {
+    if (id !== "") {
+        div.setAttribute("id", id);
+    }
+    if (style !== "") {
         div.setAttribute("style", style);
     }
 
     return div;
+}
+
+// Function to delete a line
+function deleteLine(formGroupNumber) {
+    let divFieldsFormStudent = document.getElementById("divFieldsFormStudent");
+    let divFormGroup = document.getElementById(formGroupNumber);
+
+    divFieldsFormStudent.removeChild(divFormGroup);
+
 }
