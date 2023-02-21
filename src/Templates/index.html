@@ -1,5 +1,68 @@
 {% extends 'layout.html' %}
 {% block content %}
-
+    <div class="d-flex justify-content-center">
+        <h1>{{ title }}</h1>
+    </div>
+    <hr/>
+    <div class="d-flex justify-content-center">
+    <h3>Bienvenue sur le site de gestion de la Reconnaissance Faciale ! Pour plus plus d'intéraction avec le site,
+    veuillez <a href="{{ url_for("LoginRouter.login") }}">vous connectez</a></h3>
+    </div>
+    <hr/>
+    <div style="min-width: 5%; max-width: 95%; margin-top: 1%">
+        <div class="d-flex justify-content-center">
+            <div class="d-inline-flex">
+                <div style="margin-right: 4%">
+                    <div class="card bg-secondary mb-3" style="max-width: 20rem;">
+                        <div class="card-header">Onglet Statistique</div>
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="{{ url_for("StatRouter.stats") }}">Statistiques</a></h4>
+                            <p class="card-text">Page référançant les statistiques conçernant les visages, les
+                                accès... </p>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-left: 4%">
+                    <div class="card bg-secondary mb-3" style="max-width: 20rem;">
+                        <div class="card-header">Onglet Ajout</div>
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="{{ url_for("AddRouter.add") }}">Ajout</a></h4>
+                            <p class="card-text">Page permettant d'ajouter des visages (ainsi que diverses informations)
+                                dans la base de données.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="d-inline-flex">
+                <div style="margin-right: 4%">
+                    <div class="card bg-secondary mb-3" style="max-width: 20rem;">
+                        <div class="card-header">Onglet Visage -> Enregistrés</div>
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="{{ url_for("SeeRouter.registered") }}">Enregistrés</a></h4>
+                            <p class="card-text">Permet de consulter la liste de tout les visages enregistrés ainsi que
+                                toutes les informations les conçernant et permet de modifier les informations
+                                (attention,
+                                la modification des visages n'est pas disponible, il faut supprimer et recréer le
+                                visage)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-left: 4%">
+                    <div class="card bg-secondary mb-3" style="max-width: 20rem;">
+                        <div class="card-header">Onglet Visages -> Inconnues</div>
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="{{ url_for("SeeRouter.unknown") }}">Inconnues</a></h4>
+                            <p class="card-text">Permet de consulter tout les visages qui n'ont pas été identifier par
+                                le raspberry (sert uniquement à la consultation)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% include 'footer.html' %}
