@@ -26,7 +26,6 @@ class AddPeopleModel:
     FORM_FILE = "formFile"
     FORM_ACCESS = "flexSwitchCheckAccess"
 
-
     def __init__(self):
         pass
 
@@ -51,10 +50,12 @@ class AddPeopleModel:
 
         for key, value in data:
 
-            # If the number at the end changed or if a field not valid we check the another
-            # line of fields
+            # If the key doesn't end with the actual form number, it means that we are on a new form
             if not key.endswith(str(actual_form)):
+                # If the separated_form is not empty, it means that we have all the data for the actual form,
+                # else it's a removed form
                 if files.get(f"formFile{actual_form}") is not None:
+                    # Check if the file is valid
                     if AddPeopleModel.verify_field(files[f"formFile{actual_form}"].filename,
                                                    FieldsType.FILE) and return_error_string == []:
                         file = files[f"formFile{actual_form}"]
@@ -76,10 +77,9 @@ class AddPeopleModel:
                         else:
                             os.remove(path)
                             return_error_string.append(f"Line ({actual_form}) for DA {separated_form['da']} : {error}")
-                    actual_form += 1
-                    separated_form = {}
-                else:
-                    actual_form += 1
+                        # Reset separated_form only if the file is valid and exists
+                        separated_form = {}
+                actual_form += 1
 
             # Due to separated_from passed by reference we need to force the call of "check_for_error" so we can't
             # use the "or" operator
@@ -88,6 +88,7 @@ class AddPeopleModel:
             if key.startswith("flexSwitchCheckAccess"):
                 separated_form["have_access"] = True
 
+        # If the loop return list of Faces, we can insert them in the database
         if len(data_faces) > 0:
             DBHandlerManager.insert_faces_db(data_faces)
 
