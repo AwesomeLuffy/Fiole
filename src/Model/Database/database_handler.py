@@ -101,11 +101,11 @@ class DatabaseHandler:
             conn.close()
 
     @staticmethod
-    def delete_values(sql: str, where: tuple) -> int:
+    def delete_values(sql: str, where: tuple | None) -> int:
         conn = DatabaseHandler.get_conn()
         cursor = conn.cursor()
         try:
-            cursor.execute(sql, where)
+            cursor.execute(sql) if where is None else cursor.execute(sql, where)
             conn.commit()
 
             return cursor.rowcount
