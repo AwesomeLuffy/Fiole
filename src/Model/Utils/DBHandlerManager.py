@@ -19,7 +19,7 @@ class DBHandlerManager:
 
         data_faces: list of DataFace to insert
         """
-        sql = "INSERT INTO faces (da, nom, prenom, encoded, image_location, acces) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO face (da, nom, prenom, encoded, image_location, acces) VALUES (%s, %s, %s, %s, %s, %s)"
         # Convert DataFace to tuple
         val = [(face.da, face.name, face.surname, face.face_encoded_bytes, face.img_path, face.have_access) for face in
                data_faces]
@@ -31,7 +31,7 @@ class DBHandlerManager:
 
         da: da of the face to delete
         """
-        sql = "DELETE FROM faces WHERE da = %s"
+        sql = "DELETE FROM face WHERE da = %s"
         return DatabaseHandler.delete_values(sql, (da,))
 
     @staticmethod
@@ -39,7 +39,7 @@ class DBHandlerManager:
         """Get all faces from the database
         :return:
         """
-        sql = "SELECT da, image_location, nom, prenom, acces FROM faces"
+        sql = "SELECT da, image_location, nom, prenom, acces FROM face"
         return DatabaseHandler.read_values(sql, as_dict=True)
 
 
@@ -50,7 +50,7 @@ class DBHandlerManager:
 
         face: face to update
         """
-        sql = "UPDATE faces SET nom = %s, prenom = %s, acces = %s WHERE da = %s"
+        sql = "UPDATE face SET nom = %s, prenom = %s, acces = %s WHERE da = %s"
         val = (face.name, face.surname, face.have_access, face.da)
         return DatabaseHandler.update_values(sql, val)
 
