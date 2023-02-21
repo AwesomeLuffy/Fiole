@@ -5,6 +5,7 @@ from src.Model.Utils.DBHandlerManager import DBHandlerManager
 import base64
 from src.Model.AddPeopleModel import AddPeopleModel
 from src.Model.Utils.DataFace import DataFace
+import os
 
 
 class SeePeopleModel:
@@ -32,6 +33,17 @@ class SeePeopleModel:
             DBHandlerManager.update_face_db(data_face)
 
         return return_error_string
+
+    @staticmethod
+    def delete_people(da: str) -> None:
+        """Delete a person in the database
+        :param da: da of the person
+        :return: None
+        """
+        da_image_path, = DatabaseHandler.read_values("SELECT image_location FROM face WHERE da = %s", (da,),
+                                                     only_one=True)
+        os.remove(da_image_path)
+        DBHandlerManager.delete_face_db(int(da))
 
     @staticmethod
     def get_unknowns() -> list[tuple]:
