@@ -92,7 +92,7 @@ class SeePeopleController:
                 spvm_instance.postback = True
 
             elif request.form[SeePeopleController.SUBMIT_KEY] == SeePeopleController.SUBMIT_ACTION_DELETE:
-                DBHandlerManager.delete_face_db(int(request.form[SeePeopleController.DA_KEY]))
+                SeePeopleModel.delete_people(request.form[SeePeopleController.DA_KEY])
                 # Assign to the instance the postback to display the card with the message
                 spvm_instance.data_list = DBHandlerManager.get_all_faces_db()
                 spvm_instance.postback = True
