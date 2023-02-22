@@ -40,7 +40,7 @@ class SeePeopleModel:
         :param da: da of the person
         :return: None
         """
-        da_image_path, = DatabaseHandler.read_values("SELECT image_location FROM face WHERE da = %s",
+        da_image_path, = DatabaseHandler.read_values(f"SELECT image_location FROM {DBHandlerManager.MYSQL_FACE_TABLE} WHERE da = %s",
                                                      (da,),
                                                      only_one=True)
         if da_image_path:
@@ -52,7 +52,7 @@ class SeePeopleModel:
         """Get all unknown faces from the database
         :return:
         """
-        sql = "SELECT name, image, date_inserted FROM unknows"
+        sql = f"SELECT name, image, date_inserted FROM {DBHandlerManager.MYSQL_UNKNOWN_TABLE}"
         values = DatabaseHandler.read_values(sql, as_dict=True)
         # Get BLOB image and convert to base64
 
@@ -66,7 +66,7 @@ class SeePeopleModel:
 
         :return: number of rows deleted
         """
-        sql = "DELETE FROM unknows"
+        sql = f"DELETE FROM {DBHandlerManager.MYSQL_UNKNOWN_TABLE}"
         return DatabaseHandler.delete_values(sql, None)
 
     @staticmethod
@@ -77,5 +77,5 @@ class SeePeopleModel:
 
         :return: number of rows deleted
         """
-        sql = "DELETE FROM unknows WHERE name = %s"
+        sql = f"DELETE FROM {DBHandlerManager.MYSQL_UNKNOWN_TABLE} WHERE name = %s"
         return DatabaseHandler.delete_values(sql, (name,))
