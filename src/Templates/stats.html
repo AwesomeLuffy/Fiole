@@ -2,6 +2,12 @@
 {% block content %}
     {# Obj is StatViewModel#}
     {% if obj is defined and obj %}
+        {% if obj.server_response != "" %}
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{ obj.server_response }}
+            </div>
+        {% endif %}
         <div style="margin-left: 10%; margin-right: 10%">
             <div style="margin-top: 5%">
                 <h3>Pourcentage des accès (Oui / Non) : {{ obj.access_true_count_percentage }}%</h3>
@@ -34,13 +40,24 @@
             <hr/>
             <div>
                 <form method="post">
-                    <button type="submit" class="btn btn-outline-success float-end" name="refresh" value="refresh">
+                    <button type="submit" class="btn btn-outline-info float-end" name="submit" value="refresh">
                         Mettre à jour les données du Raspberry
                     </button>
                 </form>
             </div>
             <div>
-
+                <form method="post">
+                    <button type="submit" class="btn btn-outline-danger float-end" name="submit" value="stop_cam">
+                        Éteindre la caméra
+                    </button>
+                </form>
+            </div>
+            <div>
+                <form method="post">
+                    <button type="submit" class="btn btn-outline-success float-end" name="submit" value="start_cam">
+                        Allumer la caméra
+                    </button>
+                </form>
             </div>
         </div>
     {% endif %}
