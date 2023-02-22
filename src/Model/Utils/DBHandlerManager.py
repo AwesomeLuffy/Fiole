@@ -14,7 +14,7 @@ class DBHandlerManager:
     """
     MYSQL_FACE_TABLE = "face"
     MYSQL_UNKNOWN_TABLE = "unknowns"
-    MYSQL_USER_TABLE = "users"
+    MYSQL_USER_TABLE = "user"
 
     @staticmethod
     def insert_faces_db(data_faces: list[DataFace]):
