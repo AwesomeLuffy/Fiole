@@ -12,6 +12,9 @@ class DBHandlerManager:
     This class is used to communicate with the database. It is used to insert, delete, update and get data from the database.
     Instead of database_handler that only used to execute queries, this class is used to execute queries and convert the data
     """
+    MYSQL_FACE_TABLE = "face"
+    MYSQL_UNKNOWN_TABLE = "unknowns"
+    MYSQL_USER_TABLE = "users"
 
     @staticmethod
     def insert_faces_db(data_faces: list[DataFace]):
@@ -19,7 +22,7 @@ class DBHandlerManager:
 
         data_faces: list of DataFace to insert
         """
-        sql = "INSERT INTO face (da, nom, prenom, encoded, image_location, acces) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = f"INSERT INTO {DBHandlerManager.MYSQL_FACE_TABLE} (da, nom, prenom, encoded, image_location, acces) VALUES (%s, %s, %s, %s, %s, %s)"
         # Convert DataFace to tuple
         val = [(face.da, face.name, face.surname, face.face_encoded_bytes, face.img_path, face.have_access) for face in
                data_faces]
@@ -31,7 +34,7 @@ class DBHandlerManager:
 
         da: da of the face to delete
         """
-        sql = "DELETE FROM face WHERE da = %s"
+        sql = f"DELETE FROM {DBHandlerManager.MYSQL_FACE_TABLE} WHERE da = %s"
         return DatabaseHandler.delete_values(sql, (da,))
 
     @staticmethod
@@ -39,10 +42,8 @@ class DBHandlerManager:
         """Get all faces from the database
         :return:
         """
-        sql = "SELECT da, image_location, nom, prenom, acces FROM face"
+        sql = f"SELECT da, image_location, nom, prenom, acces FROM {DBHandlerManager.MYSQL_FACE_TABLE}"
         return DatabaseHandler.read_values(sql, as_dict=True)
-
-
 
     @staticmethod
     def update_face_db(face: DataFace):
@@ -50,7 +51,7 @@ class DBHandlerManager:
 
         face: face to update
         """
-        sql = "UPDATE face SET nom = %s, prenom = %s, acces = %s WHERE da = %s"
+        sql = f"UPDATE {DBHandlerManager.MYSQL_FACE_TABLE} SET nom = %s, prenom = %s, acces = %s WHERE da = %s"
         val = (face.name, face.surname, face.have_access, face.da)
         return DatabaseHandler.update_values(sql, val)
 
@@ -64,7 +65,7 @@ class DBHandlerManager:
 
         :return: True if the password is correct, False otherwise
         """
-        sql = "SELECT password FROM user WHERE name = %s"
+        sql = f"SELECT password FROM {DBHandlerManager.MYSQL_USER_TABLE} WHERE name = %s"
         password, = DatabaseHandler.read_values(sql, (username,), only_one=True)
         return bcrypt.checkpw(password_check.encode('utf-8'), password.encode('utf-8'))
 
