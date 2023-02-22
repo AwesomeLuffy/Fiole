@@ -27,4 +27,4 @@ LoginRouter.route('/logout', methods=['GET'])(LoginController.logout)
 
 # Create router for the stat page
 StatRouter = Blueprint('StatRouter', __name__)
-StatRouter.route('/stats', methods=['GET'])(StatController.stats)
+StatRouter.route('/stats', methods=['GET', 'POST'])(StatController.stats)
