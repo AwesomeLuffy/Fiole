@@ -35,14 +35,16 @@ class SeePeopleModel:
         return return_error_string
 
     @staticmethod
-    def delete_people(da: str) -> None:
+    def delete_people(da: str):
         """Delete a person in the database
         :param da: da of the person
         :return: None
         """
-        da_image_path, = DatabaseHandler.read_values("SELECT image_location FROM face WHERE da = %s", (da,),
+        da_image_path, = DatabaseHandler.read_values("SELECT image_location FROM face WHERE da = %s",
+                                                     (da,),
                                                      only_one=True)
-        os.remove(da_image_path)
+        if da_image_path:
+            os.remove(da_image_path)
         DBHandlerManager.delete_face_db(int(da))
 
     @staticmethod
